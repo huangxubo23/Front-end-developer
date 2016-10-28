@@ -15,7 +15,7 @@ push()、pop() 和 peek() 是栈的 3 个主要方法，但是栈还有其他方
 `clear()`方法清除栈内所有元素，`length()`方法可以获取栈内元素的个数。
 
 ### 栈的代码实现
-`
+```
 function Stack() {
     this.stack = [];
     this.length = 0;
@@ -48,4 +48,4 @@ Stack.prototype.length = function () {
 Stack.prototype.clear = function () {
     this.stack.length = 0;
 };
-`
+```
