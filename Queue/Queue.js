@@ -30,7 +30,7 @@ Queue.prototype.peek = function () {
 };
 
 // 判断队列是否为空
-Queue.prototype.isEmpty = function(){
+Queue.prototype.isEmpty = function () {
     return this.queue.length === 0;
 };
 
