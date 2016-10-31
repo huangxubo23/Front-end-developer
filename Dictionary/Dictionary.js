@@ -57,18 +57,29 @@
         // Object.keys(this.dataStore).map(function (key) {
         //     callback(key, this.dataStore[key]);
         // });
-        for (var key in this.dataStore){
+        for (var key in this.dataStore) {
             callback(key, this.dataStore[key]);
         }
     };
 
-    Dictionary.prototype.clear = function(){
+    Dictionary.prototype.clear = function () {
         // for(var key in this.datastore){
         //     delete this.datastore[key];
         // }
         this.dataStore = Object.create(null);
         this._size = 0;
-    }
+    };
+
+    Dictionary.prototype.showAll = function () {
+        var _this = this;
+        var arr = Object.keys(this.dataStore).sort().map(function (key) {
+            return {
+                key: key,
+                value: _this.dataStore[key]
+            }
+        });
+        return arr;
+    };
 
     module.exports = Dictionary;
 })();
