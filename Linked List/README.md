@@ -15,12 +15,15 @@ JavaScript中数组的主要问题是，它们被实现成了对象，与其他�
 
 遍历链表，就是跟着链接，从链表的首元素一直走到尾元素（但这不包含链表的头节点，头节点常常用来作为链表的接入点）。
 然而要标识出链表的起始节点却有点麻烦，许多链表的实现都在链表最前面有一个特殊节点，叫做`头节点`。链表的尾元素指向一个 null 节点。
+
 ![有头节点的链表](https://github.com/huangxubo23/JavaScript/blob/master/Linked%20List/1%E6%9C%89%E5%A4%B4%E8%8A%82%E7%82%B9%E7%9A%84%E9%93%BE%E8%A1%A8.png)
 
 链表中插入一个节点的效率很高。向链表中插入一个节点，需要修改它前面的节点（前驱），使其指向新加入的节点，而新加入的节点则指向原来前驱指向的节点。
+
 ![向链表插入元素](https://github.com/huangxubo23/JavaScript/blob/master/Linked%20List/2%E5%90%91%E9%93%BE%E8%A1%A8%E6%8F%92%E5%85%A5%E5%85%83%E7%B4%A0.png)
 
 从链表中删除一个元素也很简单。将待删除元素的前驱节点指向待删除元素的后继节点，同时将待删除元素指向null，元素就删除成功了。
+
 ![从链表中删除元素](https://github.com/huangxubo23/JavaScript/blob/master/Linked%20List/3%E4%BB%8E%E9%93%BE%E8%A1%A8%E4%B8%AD%E5%88%A0%E9%99%A4%E5%85%83%E7%B4%A0.png)
 
 链表还有其他一些操作，但插入和删除元素最能说明链表为什么如此有用。
@@ -38,9 +41,9 @@ LList 类提供了对链表进行操作的方法。该类的功能包括插入�
 
 ```
 /*
-\* Node 类
-\* element属性：用来保存节点上的数据
-\* next属性：用来保存指向下一个节点的链接。
+* Node 类
+* element属性：用来保存节点上的数据
+* next属性：用来保存指向下一个节点的链接。
 */
 function Node(element) {
     this.element = element;
@@ -50,7 +53,7 @@ function Node(element) {
 }
 
 /*
-\* LinkedList 类
+* LinkedList 类
 */
 function LList() {
     this.head = new Node('head');
