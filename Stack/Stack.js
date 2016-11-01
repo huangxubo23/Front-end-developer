@@ -37,5 +37,5 @@ Stack.prototype.length = function () {
 
 // 清空栈
 Stack.prototype.clear = function () {
-    this.stack.length = 0;
+    this.stack.length = this.length = 0;
 };
