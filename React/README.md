@@ -1,8 +1,8 @@
 ## React学习笔记
-React是一个用于组建用户界面的JavaScript库，让你以更简单的方式来创建交互式用户界面。
+`React` 是一个用于组建用户界面的JavaScript库，让你以更简单的方式来创建交互式用户界面。
 
 ### JSX
-JSX 是一个看起来很像 XML 的 JavaScript 语法扩展。 每一个XML标签都会被JSX转换工具转换成纯JavaScript代码，使用JSX，组件的结构和组件之间的关系看上去更加清晰。
+`JSX` 是一个看起来很像 XML 的 JavaScript 语法扩展。 每一个XML标签都会被JSX转换工具转换成纯JavaScript代码，使用JSX，组件的结构和组件之间的关系看上去更加清晰。
 
 JSX并不是React必须使用的，但React官方建议我们使用 JSX , 因为它能定义简洁且我们熟知的包含属性的树状结构语法。
 
@@ -58,6 +58,14 @@ ReactDOM.render(
 var MyTitle = React.createClass({
   propTypes: {
     title: React.PropTypes.string.isRequired,
+    navigator:React.PropTypes.object,
+    leftButtonTitle: React.PropTypes.string,
+    leftButtonIcon: Image.propTypes.source,
+    popEnabled:React.PropTypes.bool,
+    onLeftButtonClick: React.PropTypes.func,
+    rightButtonTitle: React.PropTypes.string,
+    rightButtonIcon:Image.propTypes.source,
+    onRightButtonClick:React.PropTypes.func
   },
   render: function() {
      return <h1> {this.props.title} </h1>;
@@ -126,7 +134,7 @@ var MyComponent = React.createClass({
 ~~~
 注意：只有在组件的 `render` 方法被调用时，`ref` 才会被调用，组件才会返回 `ref`。如果在调用this.refs.xx时render方法还没被调用，那么你得到的是 `undefined`。
 
-#### state
+#### state状态
 上文讲到了`props`，因为每个组件只会根据props 渲染了自己一次，props 是不可变的。为了实现交互，可以使用组件的 `state` 。`this.state` 是组件私有的，可以通过 `getInitialState()` 方法初始化，通过调用 `this.setState()` 来改变它。当 `state` 更新之后，组件就会重新渲染自己。
 
 `render()` 方法依赖于 `this.props` 和 `this.state` ，框架会确保渲染出来的 UI 界面总是与输入（ this.props 和 this.state ）保持一致。
@@ -149,6 +157,17 @@ var FavoriteButton=React.createClass({
 });
 ~~~
 上面代码是一个 FavoriteButton 组件，它的 `getInitialState` 方法用于定义初始状态，也就是一个对象，这个对象可以通过 `this.state` 属性读取。当用户点击组件，导致状态变化，`this.setState` 方法就修改状态值，每次修改以后，自动调用 `this.render` 方法，再次渲染组件。
+
+#### render()方法
+`render()` 方法是Component必须的。当该方法被回调的时候，会检测 `this.props` 和 `this.state`，并返回一个单子级组件。该子级组件可以是虚拟的本地 DOM 组件（比如 \<div \/> 或者 React.DOM.div()），也可以是自定义的复合组件。
+
+render()也可以返回 `null` 或者 `false` 来表明不需要渲染任何东西。实际上，React 渲染一个\<noscript\>标签来处理当前的差异检查逻辑。当返回 null 或者 false 的时候，`this.getDOMNode()` 将返回 `null`。
+
+`render()`函数应该是纯粹的，也就是说该函数不修改组件的 state，每次调用都返回相同的结果，不读写 DOM 信息，也不和浏览器交互（例如通过使用 setTimeout）。如果需要和浏览器交互，在 `componentDidMount()` 中或者其它生命周期方法中做这件事。保持 render() 纯粹，可以使服务器端渲染更加切实可行，也使组件更容易被理解。
+
+#### 组件的生命周期(Component Lifecycle)
+在React 中组件(Component)也是有自己的生命周期方法的。
+
 
 #### 使用建议
 * 组件类的第一个字母必须大写。
