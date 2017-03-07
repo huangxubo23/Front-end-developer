@@ -168,6 +168,7 @@ render()也可以返回 `null` 或者 `false` 来表明不需要渲染任何东�
 #### 组件的生命周期(Component Lifecycle)
 在React 中组件(Component)也是有自己的生命周期方法的。
 
+![Component Lifecycle](https://github.com/huangxubo23/Front-end-developer/blob/master/React/images/01-component-lifecycle.jpg)
 
 #### 使用建议
 * 组件类的第一个字母必须大写。
