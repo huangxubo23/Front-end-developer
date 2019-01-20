@@ -1,5 +1,27 @@
 # 前端学习资料汇总
 
+## JavaScript
+### 闭包
+JavaScript变量分为局部变量或全局变量。
+
+简言之，闭包是由函数引用其周边状态（词法环境）绑在一起形成的（封装）组合结构。在JavaScript中，闭包在每个函数被创建时形成。
+
+实际上，由于闭包与它的词法环境绑在一起，因此闭包让我们能够从一个函数内部访问其外部函数的作用域。内部函数将能够访问到外部函数作用域中的变量，即使外部函数已经执行完毕。
+
+要使用闭包，只需要简单地将一个函数定义在另一个函数内部，并将它暴露出来。要暴露一个函数，可以将它返回或者传给其他函数。
+
+在JavaScript中，闭包是用来实现数据私有的原生机制。当你使用闭包来实现数据私有时，被封装的变量只能在闭包容器函数作用域中使用。你无法绕过对象被授权的方法在外部访问这些数据。在JavaScript中，任何定义在闭包作用域下的公开方法才可以访问这些数据。
+
+JavaScript闭包例子：
+```
+function sayHello(name) {
+  var text = 'Hello ' + name; // Local variable
+  var say = function() { console.log(text); }
+  return say;
+}
+sayHello('Harry'); // logs "Hello Harry"
+```
+
 ## 前端数据层
 * [复杂单页应用的数据层设计](https://github.com/xufei/blog/issues/42)
 
