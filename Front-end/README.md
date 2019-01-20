@@ -1,7 +1,58 @@
 # 前端学习资料汇总
+## JavaScript基础
+### JS数据类型
+最新的 ECMAScript 标准定义了 7 种数据类型:
+* 6种原始类型：
+    * Boolean
+    * Null
+    * Undefined
+    * Number
+    * String
+    * Symbol (ECMAScript 6 新定义)
+* Object类型：
+    * 对象 (Object)
+    * 数组（Array）
+    * 函数（Function）
+    * 正则（RegExp）
+    * 日期（Date）
 
-## JavaScript
-### 闭包
+### 判断变量是否是数组（Array）
+* instanceof判断和constructor原型链方法:
+    ```
+    var ary = [1,23,4];
+    // instanceof判断
+    console.log(ary instanceof Array)              // true
+    // 原型链方法
+    console.log(ary.__proto__.constructorn === Array); // true IE早期版本里面__proto__是没有定义的哦
+    console.log(ary.constructor === Array);           // true 这两段代码是一样的
+    ```
+
+    instanceof 和 constructor 判断的变量，必须在当前页面声明的。比如，父页面有一个iframe，ifram中引用了一个子页面，在子页面中声明了一个ary1，并将其赋值给父页面的一个变量ary2，这时判断该变量，ary2.constructor === Array，会返回false。原因：
+    * array属于引用型数据，在传递过程中，仅仅是引用地址的传递。
+    * 每个页面的Array原生对象所引用的地址是不一样的，在子页面声明的array，所对应的构造函数，是子页面的Array对象；父页面来进行判断，使用的Array并不等于子页面的Array。
+  
+
+* 通用的方法:
+    ```
+    var ary = [1,23,4];
+    function isArray(o){
+        return Object.prototype.toString.call(o) === '[object Array]';
+    }
+    console.log(isArray(ary));  // true
+    ```
+* 新的方法Array.isArray(arg);
+    ```
+    if(!Array.isArray){
+        Array.isArray = function(arg){
+            return Object.prototype.toString.call(arg)==='[object Array]';
+        }
+    }
+    ```
+    因为是新添加的，在不支持的浏览器上可能有兼容性，用的时候需要兼容下不支持的浏览器，这个时候就要结合上面通用的方法了。
+    
+
+## JavaScript高级编程
+### JS闭包
 JavaScript变量分为局部变量或全局变量。
 
 简言之，闭包是由函数引用其周边状态（词法环境）绑在一起形成的（封装）组合结构。在JavaScript中，闭包在每个函数被创建时形成。
@@ -20,6 +71,35 @@ function sayHello(name) {
   return say;
 }
 sayHello('Harry'); // logs "Hello Harry"
+```
+
+### JS原型和原型链 
+* [JavaScript深入之从原型到原型链](https://github.com/mqyqingfeng/Blog/issues/2)
+
+#### 构造函数创建对象（JS类继承）
+我们先使用构造函数创建一个对象：
+```
+function Person() {
+
+}
+var person = new Person();
+person.name = 'Harry';
+console.log(person.name) // Harry
+```
+在这个例子中，Person就是一个构造函数，我们使用new创建了一个实例对象person。
+
+#### prototype
+每个函数都有一个 prototype 属性，就是我们经常在各种例子中看到的那个 prototype ，比如：
+```
+function Person() {
+
+}
+// 注意prototype是函数才会有的属性
+Person.prototype.name = 'Harry';
+var person1 = new Person();
+var person2 = new Person();
+console.log(person1.name) // Harry
+console.log(person2.name) // Harry
 ```
 
 ## 前端数据层
@@ -106,7 +186,7 @@ Chrome浏览器自带防御,可拦截反射性XSS（HTML内容和属性），js�
     ```
     var escapeHtml = function(str) {
         str = str.replace(/</g,'&lt;');
-        str = str.replace(/</g,'&gt;');
+        str = str.replace(/>/g,'&gt;');
         return str;
     }
     ```
