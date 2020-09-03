@@ -11,5 +11,8 @@ JavaScript实践代码和文章精选。
 * [Queue-队列](https://github.com/huangxubo23/Front-end-developer/tree/master/DataStructure/Queue)
 * [Linked List-链表](https://github.com/huangxubo23/Front-end-developer/tree/master/DataStructure/Linked%20List)
 
+### JS设计模式（Design Patterns）
+* [Observer-观察者模式](https://github.com/huangxubo23/Front-end-developer/tree/master/DesignPatterns/Observer)
+
 ### 參考文章
 * [Arrays as Multipurpose Data Structures in JavaScript](http://www.jomendez.com/2015/12/07/array-as-multipurpose-data-structures-in-javascript/)
