@@ -387,21 +387,15 @@ ORDER BY s.score DESC
 
 `INNER JOIN（内连接）`是选出两张表都存在的记录
 
-![INNER JOIN](./images/Query_INNER JOIN.png "内连接（INNER JOIN）")
-
-![INNER JOIN](https://static.liaoxuefeng.com/files/attachments/1246892164662976/l "INNER JOIN（内连接）")
+![INNER JOIN](https://github.com/huangxubo23/Front-end-developer/blob/master/DataBase/images/Query_INNER%20JOIN.png)
 
 `LEFT OUTER JOIN（左连接）`是选出左表存在的记录
 
-![LEFT OUTER JOIN](./images/Query_LEFT OUTER JOIN.png "LEFT OUTER JOIN（左连接）")
-
-![LEFT OUTER JOIN](https://static.liaoxuefeng.com/files/attachments/1246893588481376/l "LEFT OUTER JOIN（左连接）")
+![LEFT OUTER JOIN](https://github.com/huangxubo23/Front-end-developer/blob/master/DataBase/images/Query_LEFT%20OUTER%20JOIN.png)
 
 `RIGHT OUTER JOIN（右连接）`是选出右表存在的记录
 
-![RIGHT OUTER JOIN](./images/Query_RIGHT OUTER JOIN.png "RIGHT OUTER JOIN（右连接）")
-
-![RIGHT OUTER JOIN](https://static.liaoxuefeng.com/files/attachments/1246893609222688/l "RIGHT OUTER JOIN（右连接）")
+![RIGHT OUTER JOIN](https://github.com/huangxubo23/Front-end-developer/blob/master/DataBase/images/Query_RIGHT%20OUTER%20JOIN.png)
 
 `FULL OUTER JOIN（全连接）`则是选出左右表都存在的记录
 
