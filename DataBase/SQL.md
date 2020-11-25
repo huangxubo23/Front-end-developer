@@ -25,7 +25,7 @@
 对于一个关系表，除了定义每一列的名称外，还需要定义每一列的数据类型。关系数据库支持的标准数据类型包括数值、字符串、时间等：
 
 | 名称         |      类型      |                                                                                       说明 |
-| ------------ | :------------: | -----------------------------------------------------------------------------------------: |
+| ------------ | :------------: | :----------------------------------------------------------------------------------------- |
 | INT          |      整型      |                                                             4 字节整数类型，范围约+/-21 亿 |
 | BIGINT       |     长整型     |                                                          8 字节整数类型，范围约+/-922 亿亿 |
 | REAL         |     浮点型     |                                                              4 字节浮点数，范围约+/-10^38^ |
@@ -405,9 +405,7 @@ ORDER BY s.score DESC
 
 `FULL OUTER JOIN（全连接）`则是选出左右表都存在的记录
 
-![FULL OUTER JOIN](./images/Query_FULL OUTER JOIN.png "FULL OUTER JOIN（全连接）")
-
-![FULL OUTER JOIN](https://static.liaoxuefeng.com/files/attachments/1246893632359424/l "FULL OUTER JOIN（全连接）")
+![FULL OUTER JOIN](https://github.com/huangxubo23/Front-end-developer/blob/master/DataBase/images/Query_FULL%20OUTER%20JOIN.png)
 
 #### 小结
 
@@ -417,3 +415,205 @@ ORDER BY s.score DESC
 
 JOIN查询仍然可以使用`WHERE`条件和`ORDER BY`排序。
 
+
+
+## 修改数据
+关系数据库的基本操作就是增删改查，即CRUD：Create、Retrieve、Update、Delete。其中，对于查询，我们已经详细讲述了SELECT语句的详细用法。
+
+而对于增、删、改，对应的SQL语句分别是：
+- INSERT：插入新记录；
+- UPDATE：更新已有记录；
+- DELETE：删除已有记录。
+
+
+### INSERT
+当我们需要向数据库表中插入一条新记录时，就必须使用INSERT语句。
+
+INSERT语句的基本语法是：
+```sql
+INSERT INTO <表名> (字段1, 字段2, ...) VALUES (值1, 值2, ...);
+```
+
+```sql
+INSERT INTO students (class_id, name, gender, score) 
+VALUES
+  (1, '大宝', 'M', 87),
+  (2, '二宝', 'F', 81);
+```
+
+#### 小结
+使用`INSERT`，我们就可以一次向一个表中插入一条或多条记录。
+
+
+### UPDATE
+如果要更新数据库表中的记录，我们就必须使用UPDATE语句。
+
+UPDATE语句的基本语法是：
+```sql
+UPDATE <表名> SET 字段1=值1, 字段2=值2, ... WHERE ...;
+```
+
+```sql
+UPDATE students SET name='大牛', score=66 WHERE id=1;
+```
+
+在UPDATE语句中，可以一次更新多条记录，同时更新字段时可以使用表达式。例如，把所有80分以下的同学的成绩加10分：
+```sql
+UPDATE students SET score=score+10 WHERE score<80;
+```
+
+#### 小结
+使用`UPDATE`，我们就可以一次更新表中的一条或多条记录。
+
+不带`WHERE`条件的`UPDATE`语句会更新整个表的数据。
+
+如果`WHERE`条件没有匹配到任何记录，`UPDATE`语句不会报错，也不会有任何记录被更新。
+
+
+### DELETE
+如果要删除数据库表中的记录，我们可以使用DELETE语句。
+
+DELETE语句的基本语法是：
+```sql
+DELETE FROM <表名> WHERE ...;
+```
+
+```sql
+DELETE FROM students WHERE id>=5 AND id<=7;
+```
+
+#### 小结
+使用`DELETE`，我们就可以一次删除表中的一条或多条记录。
+
+不带`WHERE`条件的`DELETE`语句会删除整个表的数据。
+
+## MySQL
+### 实用SQL语句
+**插入或替换**
+
+如果我们希望插入一条新记录（INSERT），但如果记录已经存在，就先删除原记录，再插入新记录。此时，可以使用`REPLACE`语句，这样就不必先查询，再决定是否先删除再插入：
+```sql
+-- 若id=1的记录不存在，REPLACE语句将插入新记录，否则，当前id=1的记录将被删除，然后再插入新记录。
+REPLACE INTO students (id, class_id, name, gender, score)
+VALUES (1, 1, '小明', 'F', 99);
+```
+
+**插入或更新**
+
+如果我们希望插入一条新记录（INSERT），但如果记录已经存在，就更新该记录，此时，可以使用`INSERT INTO ... ON DUPLICATE KEY UPDATE ...`语句：
+```sql
+-- 若id=1的记录不存在，INSERT语句将插入新记录，否则，当前id=1的记录将被更新，更新的字段由UPDATE指定
+INSERT INTO students (id, class_id, name, gender, score) 
+VALUES (1, 1, '小明', 'F', 99) 
+ON DUPLICATE KEY 
+UPDATE name='小明', gender='F', score=99;
+```
+
+**插入或忽略**
+
+如果我们希望插入一条新记录（INSERT），但如果记录已经存在，就啥事也不干直接忽略，此时，可以使用`INSERT IGNORE INTO ...`语句：
+```sql
+-- 若id=1的记录不存在，INSERT语句将插入新记录，否则，不执行任何操作
+INSERT IGNORE INTO students (id, class_id, name, gender, score) 
+VALUES (1, 1, '小明', 'F', 99);
+```
+
+**快照**
+
+如果想要对一个表进行快照，即复制一份当前表的数据到一个新表，可以结合`CREATE TABLE`和`SELECT`：
+```sql
+-- 对class_id=1的记录进行快照，并存储为新表students_of_class1:
+CREATE TABLE students_of_class1 SELECT * FROM students WHERE class_id=1;
+```
+
+**写入查询结果集**
+
+```sql
+-- 创建一个统计成绩的表statistics，记录各班的平均成绩
+CREATE TABLE statistics (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  class_id BIGINT NOT NULL,
+  average DOUBLE NOT NULL,
+  PRIMARY KEY (id)
+);
+
+-- 然后，我们就可以用一条语句写入各班的平均成绩
+INSERT INTO statistics (class_id, average) 
+SELECT class_id, AVG(score)
+FROM students 
+GROUP BY class_id;
+```
+
+**强制使用指定索引**
+
+在查询的时候，数据库系统会自动分析查询语句，并选择一个最合适的索引。但是很多时候，数据库系统的查询优化器并不一定总是能使用最优索引。如果我们知道如何选择索引，可以使用`FORCE INDEX`强制查询使用指定的索引。例如：
+```sql
+SELECT * FROM students FORCE INDEX (idx_class_id) 
+WHERE class_id = 1 
+ORDER BY id DESC;
+```
+
+
+## 事务
+把多条语句作为一个整体进行操作的功能，被称为数据库`事务`。数据库事务可以确保该事务范围内的所有操作都可以全部成功或者全部失败。如果事务失败，那么效果就和没有执行这些SQL一样，不会对数据库数据有任何改动。
+
+可见，数据库事务具有ACID这4个特性：
+- A：Atomic，原子性，将所有SQL作为原子工作单元执行，要么全部执行，要么全部不执行；
+- C：Consistent，一致性，事务完成后，所有数据的状态都是一致的，即A账户只要减去了100，B账户则必定加上了100；
+- I：Isolation，隔离性，如果有多个事务并发执行，每个事务作出的修改必须与其他事务隔离；
+- D：Duration，持久性，即事务完成后，对数据库数据的修改被持久化存储。
+
+对于单条SQL语句，数据库系统自动将其作为一个事务执行，这种事务被称为`隐式事务`。
+
+要手动把多条SQL语句作为一个事务执行，使用`BEGIN`开启一个事务，使用`COMMIT`提交一个事务，这种事务被称为`显式事务`，例如，可以把转账操作作为一个显式事务：
+```sql
+BEGIN;
+UPDATE accounts SET balance = balance - 100 WHERE id = 1;
+UPDATE accounts SET balance = balance + 100 WHERE id = 2;
+COMMIT;
+```
+很显然多条SQL语句要想作为一个事务执行，就必须使用显式事务。
+
+`COMMIT`是指提交事务，即试图把事务内的所有SQL所做的修改永久保存。如果`COMMIT`语句执行失败了，整个事务也会失败。
+
+有些时候，我们希望主动让事务失败，这时，可以用`ROLLBACK`回滚事务，整个事务会失败：
+```sql
+BEGIN;
+UPDATE accounts SET balance = balance - 100 WHERE id = 1;
+UPDATE accounts SET balance = balance + 100 WHERE id = 2;
+-- 使用ROLLBACK回滚事务，整个事务会失败
+ROLLBACK;
+```
+
+**隔离级别**
+
+对于两个并发执行的事务，如果涉及到操作同一条记录的时候，可能会发生问题。因为并发操作会带来数据的不一致性，包括脏读、不可重复读、幻读等。数据库系统提供了隔离级别来让我们有针对性地选择事务的隔离级别，避免数据不一致的问题。
+
+SQL标准定义了4种隔离级别，分别对应可能出现的数据不一致的情况：
+Isolation Level |	脏读（Dirty Read） | 不可重复读（Non Repeatable Read）|	幻读（Phantom Read）
+--- | --- | --- | ---
+Read Uncommitted | Yes | Yes | Yes
+Read Committed | - | Yes | Yes
+Repeatable Read	| - | - | Yes
+Serializable | - | - | -
+
+### Read Uncommitted
+`Read Uncommitted`是隔离级别最低的一种事务级别。在这种隔离级别下，一个事务会读到另一个事务更新后但未提交的数据，如果另一个事务回滚，那么当前事务读到的数据就是脏数据，这就是脏读（Dirty Read）。
+
+### Read Committed
+在`Read Committed`隔离级别下，一个事务可能会遇到不可重复读（Non Repeatable Read）的问题。
+
+不可重复读是指，在一个事务内，多次读同一数据，在这个事务还没有结束时，如果另一个事务恰好修改了这个数据，那么，在第一个事务中，两次读取的数据就可能不一致。
+
+### Repeatable Read
+在`Repeatable Read`隔离级别下，一个事务可能会遇到幻读（Phantom Read）的问题。
+
+幻读是指，在一个事务中，第一次查询某条记录，发现没有，但是，当试图更新这条不存在的记录时，竟然能成功，并且，再次读取同一条记录，它就神奇地出现了。
+
+### Serializable
+`Serializable`是最严格的隔离级别。在Serializable隔离级别下，所有事务按照次序依次执行，因此，脏读、不可重复读、幻读都不会出现。
+
+虽然Serializable隔离级别下的事务具有最高的安全性，但是，由于事务是串行执行，所以效率会大大下降，应用程序的性能会急剧降低。如果没有特别重要的情景，一般都不会使用Serializable隔离级别。
+
+### 默认隔离级别
+如果没有指定隔离级别，数据库就会使用默认的隔离级别。在MySQL中，如果使用InnoDB，默认的隔离级别是Repeatable Read。
